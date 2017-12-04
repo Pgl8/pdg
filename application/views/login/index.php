@@ -3,7 +3,7 @@
     <div class="account-pages"></div>
     <div class="clearfix"></div>
     <div class="wrapper-page">
-
+        <?php echo isset($error) ? $error : ''; ?>
         <div class="account-bg">
             <div class="card-box mb-0">
                 <div class="m-t-10 p-20">
@@ -12,8 +12,7 @@
                             <h4 class="text-muted text-uppercase m-b-0 m-t-0">Sign In</h4>
                         </div>
                     </div>
-                    <form class="m-t-20" action="index.html" data-parsley-validate>
-
+                    <form class="m-t-20" action="Login/auth" method="post" data-parsley-validate>
                         <div class="form-group row">
                             <div class="col-12">
                                 <input type="text" name="username" placeholder="Username" class="form-control" parsley-trigger="change" required/>

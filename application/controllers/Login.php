@@ -11,24 +11,19 @@ class Login extends CI_Controller{
     }
 
     function index(){
-//        if($this->session->has_userdata('username') && $this->session->userdata('role') == 'admin') {
-//            $data['menu'] = 'school';
-//            $data['submenu'] = 'users';
-//            $this->load->view('header', $data);
-//            $this->load->view('login/index');
-//            $this->load->view('footer');
-////        }else if($this->session->has_userdata('username') && $this->session->userdata('role') == 'teacher'){
-////            $data['menu'] = 'attendance';
-////            $this->load->view('header', $data);
-////            $this->load->view('attendance/index');
-////            $this->load->view('scripts');
-//        }else{
+        if($this->session->has_userdata('username') && $this->session->userdata('role') == 'admin'){
+            $this->load->view('header');
+            $this->load->view('admin/index');
+            $this->load->view('footer');
+        }else if($this->session->has_userdata('username') && $this->session->userdata('role') == 'staff'){
+            $this->load->view('header');
+            $this->load->view('staff/index');
+            $this->load->view('footer');
+        }else{
             $this->load->view('header');
             $this->load->view('login/index');
             $this->load->view('footer');
-//        }
-
-        //$this->session->unset_userdata('status');
+        }
     }
 
     function auth (){
@@ -39,55 +34,43 @@ class Login extends CI_Controller{
         $this->form_validation->set_rules("username", "Username", "trim|required");
         $this->form_validation->set_rules("password", "Password", "trim|required");
 
-        if($this->session->has_userdata('username')){
-            $data['menu'] = 'school';
-            $data['submenu'] = 'users';
-            $this->load->view('header', $data);
-            $this->load->view('users/index');
-        }else{
+        if($result = $this->Login_model->login_user($username, sha1($password))){
 
-            if($result = $this->Login_model->login_user($username, sha1($password))){
+            //set the session variables
+            $sessiondata = array(
+                'id' => $result[0]->id,
+                'username' => $result[0]->username,
+                'email' => $result[0]->email,
+                'role' => $result[0]->role,
+                'loginuser' => TRUE
+            );
+            //die(var_dump($sessiondata));
+            $this->session->set_userdata($sessiondata);
 
-                //set the session variables
-                $sessiondata = array(
-                    'idSchool' => $result[0]->idSchool,
-                    'idUser' => $result[0]->idUser,
-                    'username' => $username,
-                    'school' => $result[0]->schoolName,
-                    'email' => $result[0]->email,
-                    'role' => $result[0]->role,
-                    'loginuser' => TRUE
-                );
-
-                $this->session->set_userdata($sessiondata);
-
-                if($this->session->userdata('role') == 'teacher') {
-                    $data['menu'] = 'attendance';
-                    $this->load->view('header', $data);
-                    $this->load->view('attendance/index');
-                    $this->load->view('scripts');
-                }else{
-                    $data['menu'] = 'school';
-                    $data['submenu'] = 'users';
-                    $this->load->view('header', $data);
-                    $this->load->view('users/index');
-                    $this->load->view('scripts');
-                }
+            if($this->session->userdata('role') == 'admin') {
+                //$data['menu'] = 'attendance';
+                $this->load->view('header'/*, $data*/);
+                $this->load->view('admin/index');
+                $this->load->view('footer');
 
             }else{
-                $data['error'] = '<div class="alert alert-danger">Username or password invalid.</div>';
+
                 $this->load->view('header');
-                $this->load->view('login/index', $data);
-                $this->load->view('scripts');
+                $this->load->view('staff/index');
+                $this->load->view('footer');
             }
+
+        }else{
+            $data['error'] = '<div class="alert alert-danger">Username or password invalid.</div>';
+            $this->load->view('header');
+            $this->load->view('login/index', $data);
+            $this->load->view('footer');
         }
+
     }
 
-    function logout()
-    {
+    function logout(){
         $this->session->sess_destroy();
-        $this->load->view('header');
-        $this->load->view('login/index');
-        $this->load->view('scripts');
+        redirect(base_url());
     }
 }

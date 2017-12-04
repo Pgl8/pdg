@@ -18,11 +18,11 @@
     <link href="<?= base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="<?= base_url(); ?>assets/css/style.css" rel="stylesheet" type="text/css" />
 
-    <script src=<?= base_url(); ?>assets/js/modernizr.min.js"></script>
+    <script src="<?= base_url(); ?>assets/js/modernizr.min.js"></script>
 
 </head>
 
-<?php if($this->session->userdata('role') != null): ?>
+<?php if($this->session->userdata('role') != ''): ?>
 <body>
 
     <!-- Navigation Bar-->
@@ -32,7 +32,7 @@
 
                 <!-- LOGO -->
                 <div class="topbar-left">
-                    <a href="index.html" class="logo">
+                    <a href="<?= base_url(); ?>" class="logo">
                         <span>Logo</span>
                     </a>
                 </div>
@@ -58,10 +58,10 @@
                         <li class="list-inline-item dropdown notification-list">
                             <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button"
                                aria-haspopup="false" aria-expanded="false">
-                                <img src=<?= base_url(); ?>assets/images/users/avatar.jpg" alt="user" class="rounded-circle"> <h5 class="text-overflow"><small>IFA Administrator</small> </h5>
+                                <img src="<?= base_url(); ?>assets/images/users/avatar.jpg" alt="user" class="rounded-circle"> <h5 class="text-overflow"><small>IFA Administrator</small> </h5>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <a href="<?= site_url('Login/logout') ?>" class="dropdown-item notify-item">
                                     <i class="zmdi zmdi-power"></i> <span>Logout</span>
                                 </a>
 
