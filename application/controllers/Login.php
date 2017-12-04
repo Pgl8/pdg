@@ -44,21 +44,18 @@ class Login extends CI_Controller{
                 'role' => $result[0]->role,
                 'loginuser' => TRUE
             );
-            //die(var_dump($sessiondata));
+
             $this->session->set_userdata($sessiondata);
-
-            if($this->session->userdata('role') == 'admin') {
-                //$data['menu'] = 'attendance';
-                $this->load->view('header'/*, $data*/);
-                $this->load->view('admin/index');
-                $this->load->view('footer');
-
-            }else{
-
-                $this->load->view('header');
-                $this->load->view('staff/index');
-                $this->load->view('footer');
-            }
+            redirect(base_url());
+//            if($this->session->userdata('role') == 'admin') {
+//                redirect((base_url()));
+//
+//            }else{
+//
+//                $this->load->view('header');
+//                $this->load->view('staff/index');
+//                $this->load->view('footer');
+//            }
 
         }else{
             $data['error'] = '<div class="alert alert-danger">Username or password invalid.</div>';

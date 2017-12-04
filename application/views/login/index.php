@@ -12,7 +12,7 @@
                             <h4 class="text-muted text-uppercase m-b-0 m-t-0">Sign In</h4>
                         </div>
                     </div>
-                    <form class="m-t-20" action="Login/auth" method="post" data-parsley-validate>
+                    <form class="m-t-20" action="<?= base_url(); ?>login/auth" method="post" data-parsley-validate>
                         <div class="form-group row">
                             <div class="col-12">
                                 <input type="text" name="username" placeholder="Username" class="form-control" parsley-trigger="change" required/>
