@@ -90,3 +90,5 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 |--------------------------------------------------------------------------
 */
 define('TABLE_USERS', 'users');
+define('TABLE_POLICIES', 'policies');
+define('TABLE_USERS_POLICIES', 'users_policies');

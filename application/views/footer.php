@@ -52,6 +52,28 @@
         });
 
         table.buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+
+        var urlStaffTable = "<?= site_url('staff/getStaffAjax') ?>";
+        $('table#staffTable').dataTable({
+            // "processing": true, //Feature control the processing indicator.
+            "serverSide": true, //Feature control DataTables' server-side processing mode.
+            "order": [], //Initial no order.
+
+            // Load data for the table's content from an Ajax source
+            "ajax": {
+                "url": urlStaffTable,
+                "type": "POST"
+            },
+
+            //Set column definition initialisation properties.
+            "columnDefs": [
+                {
+                    "targets": [ 1 ], //first column / numbering column
+                    "orderable": false, //set not orderable
+                }
+            ]
+        });
+
     });
 
 </script>

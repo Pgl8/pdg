@@ -22,7 +22,7 @@ class Login_model extends CI_Model{
 
     public function login_user($username = FALSE, $password = FALSE){
         if($username && $password){
-            $this->db->select(TABLE_USERS.'.id,
+            $this->db->select(TABLE_USERS.'.idUser,
 							'.TABLE_USERS.'.username,
 							'.TABLE_USERS.'.email,
 							'.TABLE_USERS.'.role'

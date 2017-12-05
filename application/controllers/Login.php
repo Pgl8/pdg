@@ -12,13 +12,9 @@ class Login extends CI_Controller{
 
     function index(){
         if($this->session->has_userdata('username') && $this->session->userdata('role') == 'admin'){
-            $this->load->view('header');
-            $this->load->view('admin/index');
-            $this->load->view('footer');
+            redirect('Staff/index');
         }else if($this->session->has_userdata('username') && $this->session->userdata('role') == 'staff'){
-            $this->load->view('header');
-            $this->load->view('staff/index');
-            $this->load->view('footer');
+            redirect('Policies/index');
         }else{
             $this->load->view('header');
             $this->load->view('login/index');
@@ -38,11 +34,10 @@ class Login extends CI_Controller{
 
             //set the session variables
             $sessiondata = array(
-                'id' => $result[0]->id,
+                'idUser' => $result[0]->idUser,
                 'username' => $result[0]->username,
                 'email' => $result[0]->email,
-                'role' => $result[0]->role,
-                'loginuser' => TRUE
+                'role' => $result[0]->role
             );
 
             $this->session->set_userdata($sessiondata);
