@@ -58,7 +58,7 @@
                         <li class="list-inline-item dropdown notification-list">
                             <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button"
                                aria-haspopup="false" aria-expanded="false">
-                                <img src="<?= base_url(); ?>assets/images/users/avatar.jpg" alt="user" class="rounded-circle"> <h5 class="text-overflow"><small>IFA Administrator</small> </h5>
+                                <img src="<?= base_url(); ?>assets/images/users/avatar.jpg" alt="user" class="rounded-circle"> <h5 class="text-overflow"><small>IFA <?= ucfirst($this->session->userdata('username'))?></small> </h5>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
                                 <a href="<?= site_url('Login/logout') ?>" class="dropdown-item notify-item">
@@ -84,7 +84,9 @@
                     <!-- Navigation Menu-->
                     <ul class="navigation-menu">
                         <li class="active">
-                            <a href="ifa-admin-all-staff.html" title="Staff"><i class="fa fa-users"></i> <span> Staff</span> </a>
+                            <a href="<?= base_url() ?>" title="<?= ($this->session->userdata('role') == 'admin') ? 'Staff' : 'Policies' ?>">
+                                <i class="fa <?= ($this->session->userdata('role') == 'admin') ? 'fa-users' : 'fa-briefcase' ?>"></i>
+                                <span> <?= ($this->session->userdata('role') == 'admin') ? 'Staff' : 'Policies' ?> </span> </a>
                         </li>
                     </ul>
                     <!-- End navigation menu  -->

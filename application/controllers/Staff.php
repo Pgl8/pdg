@@ -21,6 +21,19 @@ class Staff extends CI_Controller {
 
     }
 
+    function details($idStaff){
+        if($this->session->has_userdata('username')){
+            //$data['policy'] = $this->Staff_model->getStaff($idStaff);
+
+            $this->load->view('header');
+            $this->load->view('staff/details');
+            $this->load->view('footer');
+        }else{
+            redirect(base_url());
+        }
+
+    }
+
     public function getStaffAjax(){
         $staffs = $this->Staff_model->getDatatableStaff();
         $data = array();
