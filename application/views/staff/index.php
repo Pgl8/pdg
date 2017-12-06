@@ -14,6 +14,7 @@
         </div>
         <!-- end row -->
 
+        <?= ($this->session->flashdata('message') != '') ? $this->session->flashdata('message') : '' ?>
 
         <div class="row">
             <div class="col-12">
@@ -150,19 +151,31 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <?php
+                            $attributes = array('method' => 'POST');
+                            echo form_open ('Staff/newStaff',$attributes);
+                            ?>
                                 <fieldset class="form-group">
-                                    <label>Name</label>
-                                    <input type="text" name="name" class="form-control" required/>
+                                    <label>Username</label>
+                                    <input type="text" name="username" class="form-control" required/>
                                 </fieldset>
-
+                                <fieldset class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" name="firstname" class="form-control" required/>
+                                </fieldset>
+                                <fieldset class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" name="lastname" class="form-control" required/>
+                                </fieldset>
                                 <fieldset class="form-group">
                                     <label>Email</label>
                                     <input type="email"  name="email" class="form-control" required/>
                                 </fieldset>
 
                                 <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-paper-plane-o"></i> Send</button>
-                            </form>
+                            <?php
+                            echo form_close();
+                            ?>
 
                         </div>
                     </div>

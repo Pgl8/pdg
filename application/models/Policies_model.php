@@ -13,6 +13,22 @@ class Policies_model extends CI_Model{
         return $query->result_array();
     }
 
+    public function getUnassignedPolicies(){
+        $this->db->select(TABLE_POLICIES.'.idPolicy,
+                        '.TABLE_POLICIES.'.code,
+                        '.TABLE_POLICIES.'.plan_reference,
+                        '.TABLE_POLICIES.'.first_name,
+                        '.TABLE_POLICIES.'.last_name,
+                        '.TABLE_POLICIES.'.investment_house,
+                        '.TABLE_POLICIES.'.last_operation');
+        $this->db->from(TABLE_POLICIES);
+        $this->db->join(TABLE_USERS_POLICIES, TABLE_POLICIES.'.idPolicy = '.TABLE_USERS_POLICIES.'.idPolicy', 'left');
+        $this->db->where(TABLE_USERS_POLICIES.'.idPolicy IS NULL');
+
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function getUserPolicies($idUser){
         $this->db->select(TABLE_POLICIES.'.idPolicy,
                         '.TABLE_POLICIES.'.code,
