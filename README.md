@@ -22,3 +22,7 @@ The Administrator will manage Staff users and assign them "policies", which are 
 - Clicking on a row on the list of policies will the user to a simple page (nothing fancy) that will display the details of that policy (same information as the table, read only).
 - The file "policies.sql" contains a basic table for the policies (to be changed if required), that is assumed to contain data to be used as explained above (dummy data can be used for testing).
 - Dependecies (if any) should be managed with Composer.
+
+#### Test Users:
+- admin/admin
+- staff/staff
