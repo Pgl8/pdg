@@ -14,6 +14,16 @@ class Staff_model extends CI_Model{
         return $query->result_array();
     }
 
+    public function getStaffByEmail($email = FALSE){
+        if($email){
+            $this->db->from(TABLE_USERS);
+            $this->db->where(TABLE_USERS.'.email', $email);
+
+            $query = $this->db->get();
+            return $query->result();
+        }
+    }
+
     public function addStaff($data){
         if($data){
             // Sets a predefined pass
@@ -22,6 +32,23 @@ class Staff_model extends CI_Model{
             $data['status'] = 'sent';
 
             return $this->db->insert(TABLE_USERS, $data);
+        }
+    }
+
+    public function activateStaff($data){
+        if($data){
+            $data['password'] = sha1($data['password']);
+            $data['status'] = 'active';
+
+            $this->db->where(TABLE_USERS.'.email', $data['email']);
+            return $this->db->update(TABLE_USERS, $data);
+        }
+    }
+
+
+    public function addCode($data){
+        if($data){
+            return $this->db->insert(TABLE_USERS_CODES, $data);
         }
     }
 
@@ -59,17 +86,6 @@ class Staff_model extends CI_Model{
         $this->db->where(TABLE_USERS_POLICIES.'.idPolicy', $idPolicy);
         return $this->db->delete(TABLE_USERS_POLICIES);
     }
-
-//    public function getAssignedPolicies($idUser = FALSE){
-//        if($idUser){
-//
-//            $this->db->from(TABLE_USERS);
-//            $this->db->where(TABLE_USERS.'.idUser', $idUser);
-//            $query = $this->db->get();
-//            return $query->row_array();
-//        }
-//
-//    }
 
     private function _get_datatables_query(){
         $this->db->select(TABLE_USERS.'.idUser,

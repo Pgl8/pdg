@@ -36,6 +36,9 @@ class Staff extends CI_Controller {
 
     }
 
+    /**
+     *
+     */
     public function newStaff(){
         if($this->session->has_userdata('username')){
 
@@ -53,13 +56,92 @@ class Staff extends CI_Controller {
                 }
 
                 if($this->Staff_model->addStaff($data)){
-                    $this->session->set_flashdata('message', '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>User added successfully.</div>');
+
+                    $data['code'] = $this->generateCode($data['email']);
+                    if($this->sendVerificationEmail($data)){
+                        $this->session->set_flashdata('message', '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>User added successfully.</div>');
+                    }else{
+                        $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>There was a problem sending the invitation.</div>');
+                    }
                 }else{
                     $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>There was a problem adding the user details.</div>');
                 }
+
+                redirect(base_url());
             }
         }else{
             redirect(site_url(), 'location');
+        }
+    }
+
+    private function generateCode($email){
+        $data['email'] = $email;
+        $data['code'] = md5(uniqid(rand(),true));
+
+        $this->Staff_model->addCode($data);
+
+        return $data['code'];
+    }
+
+    private function sendVerificationEmail($data){
+
+        $this->load->library('email');  	//load email library
+        $this->email->from('admin@ifabackend.com', 'IFA Backend platform'); //sender's email
+        $address = $data['email'];	//receiver's email
+        $subject= "Welcome to IFA Backend platform";	//subject
+
+        /*-----------email body starts-----------*/
+        $message=
+        'Thanks for signing up, '.$data['firstname'].'!
+      
+        Your account has been created. 
+        Here are your login details.
+        -------------------------------------------------
+        Email   : ' . $data['email'] . '
+        Temporary Password: ' . DEFAULT_PASSWORD . '
+        -------------------------------------------------
+                        
+        Please click this link to activate your account:
+            
+        ' . base_url() . 'Staff/verifyStaff?' .
+            'email=' . $address . '&hash=' . $data['code'] ;
+        /*-----------email body ends-----------*/
+
+        $this->email->to($address);
+        $this->email->subject($subject);
+        $this->email->message($message);
+        $this->email->send();
+    }
+
+    public function verifyStaff(){
+        $email = $this->input->get('email');
+        $data['user'] = $this->Staff_model->getStaffByEmail($email);
+
+        $this->load->view('header');
+        $this->load->view('staff/verify', $data);
+        $this->load->view('footer');
+
+        $this->form_validation->set_rules('firstname', 'firstname', 'required|trim');
+        $this->form_validation->set_rules('username', 'firstname', 'required|trim');
+        $this->form_validation->set_rules('lastname', 'firstname', 'required|trim');
+        $this->form_validation->set_rules('email', 'email', 'required|trim');
+        $this->form_validation->set_rules('password', 'password', 'required|trim');
+
+        if($this->input->post()){
+            unset($data);
+            foreach ($this->input->post() as $key => $value) {
+                if($key != 'submit'){
+                    $data[$key] = $value;
+                }
+            }
+            //die(var_dump($data));
+            if($this->Staff_model->activateStaff($data)){
+                $this->session->set_flashdata('message', '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>User verified successfully.</div>');
+            }else{
+                $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>There was a problem verifying the user details.</div>');
+            }
+
+            redirect(base_url());
         }
     }
 
@@ -181,4 +263,5 @@ class Staff extends CI_Controller {
 
         echo json_encode($output);
     }
+
 }
