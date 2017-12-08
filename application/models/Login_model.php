@@ -1,25 +1,23 @@
 <?php
 
-
+/**
+ * Class Login_model
+ */
 class Login_model extends CI_Model{
 
+    /**
+     * Login_model constructor.
+     */
     public function __construct() {
-        // constructor de la clase
+
     }
 
-    // USUARIOS
-//    public function check_user($email = FALSE){
-//        if($email){
-//            $this->db->from(TABLE_USERS);
-//            $this->db->where(TABLE_USERS.'.email', $email);
-//            $query = $this->db->get();
-//            if($query->num_rows() > 0){
-//                return TRUE;
-//            }
-//        }
-//        return FALSE;
-//    }
-
+    /**
+     * Logins users
+     * @param bool $username
+     * @param bool $password
+     * @return bool
+     */
     public function login_user($username = FALSE, $password = FALSE){
         if($username && $password){
             $this->db->select(TABLE_USERS.'.idUser,

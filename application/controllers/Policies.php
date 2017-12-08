@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Class Policies
+ */
 class Policies extends CI_Controller{
 
+    /**
+     * Policies constructor.
+     */
     function __construct(){
         parent::__construct();
         $this->load->helper('url');
@@ -10,6 +16,9 @@ class Policies extends CI_Controller{
 
     }
 
+    /**
+     * Main view
+     */
     function index()    {
         if($this->session->has_userdata('username')){
             $data['policies'] = $this->Policies_model->getUserPolicies($this->session->userdata('idUser'));
@@ -22,6 +31,10 @@ class Policies extends CI_Controller{
 
     }
 
+    /**
+     * Shows policy details
+     * @param $idPolicy
+     */
     function details($idPolicy){
         if($this->session->has_userdata('username')){
             $data['policy'] = $this->Policies_model->getPolicies($idPolicy);
@@ -35,6 +48,9 @@ class Policies extends CI_Controller{
 
     }
 
+    /**
+     * Ajax petition to get Policies
+     */
     public function getPoliciesAjax(){
         $staffs = $this->Policies_model->getDatatableStaff();
         $data = array();
@@ -64,8 +80,8 @@ class Policies extends CI_Controller{
             "recordsFiltered" => $this->Policies_model->count_filtered(),
             "aaData" => $data,
         );
-        //output to json format
 
+        //output to json format
         echo json_encode($output);
     }
 

@@ -1,7 +1,15 @@
 <?php
 
+/**
+ * Class Staff_model
+ */
 class Staff_model extends CI_Model{
 
+    /**
+     * Gets Staff
+     * @param bool $idUser
+     * @return mixed
+     */
     public function getStaff($idUser = FALSE){
         $this->db->from(TABLE_USERS);
         $this->db->where(TABLE_USERS.'.status != ', 'deleted');
@@ -14,6 +22,11 @@ class Staff_model extends CI_Model{
         return $query->result_array();
     }
 
+    /**
+     * Gets staff by email
+     * @param bool $email
+     * @return mixed
+     */
     public function getStaffByEmail($email = FALSE){
         if($email){
             $this->db->from(TABLE_USERS);
@@ -24,6 +37,11 @@ class Staff_model extends CI_Model{
         }
     }
 
+    /**
+     * Adds staff
+     * @param $data
+     * @return mixed
+     */
     public function addStaff($data){
         if($data){
             // Sets a predefined pass
@@ -35,6 +53,11 @@ class Staff_model extends CI_Model{
         }
     }
 
+    /**
+     * Activates staff
+     * @param $data
+     * @return mixed
+     */
     public function activateStaff($data){
         if($data){
             $data['password'] = sha1($data['password']);
@@ -45,13 +68,23 @@ class Staff_model extends CI_Model{
         }
     }
 
-
+    /**
+     * Adds verification code for a user
+     * @param $data
+     * @return mixed
+     */
     public function addCode($data){
         if($data){
             return $this->db->insert(TABLE_USERS_CODES, $data);
         }
     }
 
+    /**
+     * Edits staff details
+     * @param $idUser
+     * @param $data
+     * @return mixed
+     */
     public function editStaff($idUser, $data){
         if($idUser && $data){
             $this->db->where(TABLE_USERS.'.idUser', $idUser);
@@ -59,6 +92,11 @@ class Staff_model extends CI_Model{
         }
     }
 
+    /**
+     * Soft deletes user
+     * @param $idUser
+     * @return mixed
+     */
     public function deleteStaff($idUser){
         if($idUser){
             $data = array(
@@ -72,6 +110,12 @@ class Staff_model extends CI_Model{
         }
     }
 
+    /**
+     * Assign policy to a user
+     * @param $idUser
+     * @param $idPolicy
+     * @return mixed
+     */
     public function assignPolicy($idUser, $idPolicy){
         $data = array(
             'idUser' => $idUser,
@@ -81,12 +125,21 @@ class Staff_model extends CI_Model{
         return $this->db->insert(TABLE_USERS_POLICIES, $data);
     }
 
+    /**
+     * Unassigns policy to a user
+     * @param $idUser
+     * @param $idPolicy
+     * @return mixed
+     */
     public function unassignPolicy($idUser, $idPolicy){
         $this->db->where(TABLE_USERS_POLICIES.'.idUser', $idUser);
         $this->db->where(TABLE_USERS_POLICIES.'.idPolicy', $idPolicy);
         return $this->db->delete(TABLE_USERS_POLICIES);
     }
 
+    /**
+     * Gets query for datatable
+     */
     private function _get_datatables_query(){
         $this->db->select(TABLE_USERS.'.idUser,
                         '.TABLE_USERS.'.firstname,

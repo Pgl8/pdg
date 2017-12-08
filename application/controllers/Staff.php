@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Class Staff
+ */
 class Staff extends CI_Controller {
 
+    /**
+     * Staff constructor.
+     */
     function __construct(){
         parent::__construct();
         $this->load->helper('url');
@@ -10,6 +16,9 @@ class Staff extends CI_Controller {
         $this->load->model('Policies_model');
     }
 
+    /**
+     * Main view
+     */
     public function index(){
         if($this->session->has_userdata('username')){
             $this->load->view('header');
@@ -21,6 +30,10 @@ class Staff extends CI_Controller {
 
     }
 
+    /**
+     * Shows staff details
+     * @param $idStaff
+     */
     public function details($idStaff){
         if($this->session->has_userdata('username')){
             $data['user'] = $this->Staff_model->getStaff($idStaff);
@@ -37,7 +50,7 @@ class Staff extends CI_Controller {
     }
 
     /**
-     *
+     * Adds new staff
      */
     public function newStaff(){
         if($this->session->has_userdata('username')){
@@ -74,6 +87,11 @@ class Staff extends CI_Controller {
         }
     }
 
+    /**
+     * Generates verification code
+     * @param $email
+     * @return string
+     */
     private function generateCode($email){
         $data['email'] = $email;
         $data['code'] = md5(uniqid(rand(),true));
@@ -83,6 +101,10 @@ class Staff extends CI_Controller {
         return $data['code'];
     }
 
+    /**
+     * Sends verification email
+     * @param $data
+     */
     private function sendVerificationEmail($data){
 
         $this->load->library('email');  	//load email library
@@ -113,6 +135,9 @@ class Staff extends CI_Controller {
         $this->email->send();
     }
 
+    /**
+     * Verifies staff
+     */
     public function verifyStaff(){
         $email = $this->input->get('email');
         $data['user'] = $this->Staff_model->getStaffByEmail($email);
@@ -145,6 +170,10 @@ class Staff extends CI_Controller {
         }
     }
 
+    /**
+     * Edits staff
+     * @param $idStaff
+     */
     public function editStaff($idStaff){
         if($idStaff){
             if($this->session->has_userdata('username')){
@@ -180,6 +209,10 @@ class Staff extends CI_Controller {
         }
     }
 
+    /**
+     * Deletes staff
+     * @param $idStaff
+     */
     public function deleteStaff($idStaff){
         if($idStaff){
             if($this->session->has_userdata('username')){
@@ -197,6 +230,11 @@ class Staff extends CI_Controller {
         }
     }
 
+    /**
+     * Assigns policy to staff member
+     * @param $idStaff
+     * @param $idPolicy
+     */
     public function assignPolicy($idStaff, $idPolicy){
         if($this->session->has_userdata('username')){
 
@@ -211,6 +249,11 @@ class Staff extends CI_Controller {
 
     }
 
+    /**
+     * Unassigns policy to staff member
+     * @param $idStaff
+     * @param $idPolicy
+     */
     public function unassignPolicy($idStaff, $idPolicy){
         if($this->session->has_userdata('username')){
 
@@ -225,6 +268,9 @@ class Staff extends CI_Controller {
 
     }
 
+    /**
+     * Ajax petition to get Staff
+     */
     public function getStaffAjax(){
         $staffs = $this->Staff_model->getDatatableStaff();
         $data = array();
@@ -259,8 +305,8 @@ class Staff extends CI_Controller {
             "recordsFiltered" => $this->Staff_model->count_filtered(),
             "aaData" => $data,
         );
-        //output to json format
 
+        //output to json format
         echo json_encode($output);
     }
 

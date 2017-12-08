@@ -1,7 +1,15 @@
 <?php
 
+/**
+ * Class Policies_model
+ */
 class Policies_model extends CI_Model{
 
+    /**
+     * Gets Policies
+     * @param bool $idPolicy
+     * @return mixed
+     */
     public function getPolicies($idPolicy = FALSE){
         $this->db->from(TABLE_POLICIES);
         if($idPolicy){
@@ -13,6 +21,10 @@ class Policies_model extends CI_Model{
         return $query->result_array();
     }
 
+    /**
+     * Gets unallocated policies
+     * @return mixed
+     */
     public function getUnassignedPolicies(){
         $this->db->select(TABLE_POLICIES.'.idPolicy,
                         '.TABLE_POLICIES.'.code,
@@ -29,6 +41,11 @@ class Policies_model extends CI_Model{
         return $query->result();
     }
 
+    /**
+     * Get assigned policies to a user
+     * @param $idUser
+     * @return mixed
+     */
     public function getUserPolicies($idUser){
         $this->db->select(TABLE_POLICIES.'.idPolicy,
                         '.TABLE_POLICIES.'.code,
@@ -45,6 +62,9 @@ class Policies_model extends CI_Model{
         return $this->db->get()->result();
     }
 
+    /**
+     * Gets query for datatable
+     */
     private function _get_datatables_query(){
         $this->db->select(TABLE_POLICIES.'.code,
                         '.TABLE_POLICIES.'.plan_reference,

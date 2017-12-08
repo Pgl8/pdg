@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Class Login
+ */
 class Login extends CI_Controller{
 
+    /**
+     * Login constructor.
+     */
     function __construct(){
         parent::__construct();
         $this->load->helper('url');
@@ -10,6 +16,9 @@ class Login extends CI_Controller{
 
     }
 
+    /**
+     * Main view
+     */
     function index(){
         if($this->session->has_userdata('username') && $this->session->userdata('role') == 'admin'){
             redirect('Staff/index');
@@ -22,6 +31,9 @@ class Login extends CI_Controller{
         }
     }
 
+    /**
+     * Authorises users
+     */
     function auth (){
         $username = $this->input->post('username');
         $password = $this->input->post('password');
@@ -42,15 +54,6 @@ class Login extends CI_Controller{
 
             $this->session->set_userdata($sessiondata);
             redirect(base_url());
-//            if($this->session->userdata('role') == 'admin') {
-//                redirect((base_url()));
-//
-//            }else{
-//
-//                $this->load->view('header');
-//                $this->load->view('staff/index');
-//                $this->load->view('footer');
-//            }
 
         }else{
             $data['error'] = '<div class="alert alert-danger">Username or password invalid.</div>';
@@ -61,6 +64,9 @@ class Login extends CI_Controller{
 
     }
 
+    /**
+     * Logout users
+     */
     function logout(){
         $this->session->sess_destroy();
         redirect(base_url());
