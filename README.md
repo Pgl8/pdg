@@ -1,6 +1,3 @@
-# pdg
-Piranha Designs Test
-
 ## Goal:
 
 To create a simple restricted area with 2 levels of access, using the given HTML files.
